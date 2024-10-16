@@ -1,10 +1,13 @@
 package com.example.demo.controller;
 
 import com.example.demo.models.Student;
+import com.example.demo.models.Todo;
+import com.example.demo.services.YouTubeService;
 import com.example.demo.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -12,15 +15,22 @@ import java.util.List;
 public class StudentController {
 
     private final StudentService studentService;
+    private final YouTubeService youtubeService;
 
     @Autowired
-    public StudentController(StudentService studentService) {
+    public StudentController(StudentService studentService, YouTubeService youtubeService) {
         this.studentService = studentService;
+        this.youtubeService = youtubeService;
     }
 
     @GetMapping
     public List<Student> getStudentList () {
         return studentService.getStudentList();
+    }
+
+    @GetMapping(path = "/todo")
+    public List<Todo> getTodo () {
+        return studentService.getTodosGson();
     }
 
     @PostMapping
@@ -39,4 +49,7 @@ public class StudentController {
                                @RequestParam(required = false) String email) {
         studentService.updateStudent(studentId, name, email);
     }
+
+
+
 }
